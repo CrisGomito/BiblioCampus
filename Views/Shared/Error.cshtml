@@ -1,0 +1,22 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="max-w-xl mx-auto bg-white border border-slate-200 rounded-xl p-8">
+    <h1 class="font-display text-2xl font-bold text-rose-700">Ocurrió un error al procesar la solicitud</h1>
+    <p class="mt-2 text-sm text-slate-600">
+        Verifique la conexión a SQL Server o intente repetir la operación.
+    </p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="mt-4 text-xs text-slate-500 font-mono">
+            ID de solicitud: @Model.RequestId
+        </p>
+    }
+    <div class="mt-6">
+        <a asp-controller="Home" asp-action="Index" class="inline-flex px-4 py-2 text-sm font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800">
+            Volver al inicio
+        </a>
+    </div>
+</div>

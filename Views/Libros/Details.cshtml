@@ -1,0 +1,61 @@
+@model BiblioCampus.Models.Libro
+@{
+    ViewData["Title"] = "Detalle de Libro";
+}
+
+<div class="max-w-3xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <p class="text-xs text-slate-500">Libros / Detalle</p>
+            <h1 class="font-display text-2xl font-bold text-slate-900">@Model.Titulo</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="px-4 py-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Editar</a>
+            <a asp-action="Index" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg">Volver</a>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-6 space-y-5">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
+            <div>
+                <dt class="text-xs font-medium text-slate-500">ID</dt>
+                <dd class="mt-1 font-mono text-slate-900 tabular-nums">@Model.Id</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@Html.DisplayNameFor(m => m.Isbn)</dt>
+                <dd class="mt-1 font-mono font-medium text-slate-900">@Model.Isbn</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">Autor (FK)</dt>
+                <dd class="mt-1 font-medium text-slate-900">@Model.Autor?.NombreCompleto</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">Categoría (FK)</dt>
+                <dd class="mt-1 text-slate-800">@Model.Categoria?.Codigo · @Model.Categoria?.Nombre</dd>
+            </div>
+        </dl>
+
+        <div class="border-t border-slate-200 pt-5">
+            <h2 class="font-display text-sm font-semibold text-slate-900 mb-3">Historial de préstamos (@Model.Prestamos.Count)</h2>
+            @if (!Model.Prestamos.Any())
+            {
+                <p class="text-xs text-slate-500">Este libro todavía no registra préstamos.</p>
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100 text-sm">
+                    @foreach (var prestamo in Model.Prestamos)
+                    {
+                        <li class="py-2.5 flex items-center justify-between gap-4">
+                            <div>
+                                <p class="font-medium text-slate-900">@prestamo.Estudiante?.NombreCompleto</p>
+                                <p class="text-xs text-slate-500 font-mono">@prestamo.FechaPrestamo.ToString("yyyy-MM-dd") · @prestamo.Estado</p>
+                            </div>
+                            <a asp-controller="Prestamos" asp-action="Details" asp-route-id="@prestamo.Id" class="text-xs font-medium text-blue-700 hover:underline">Ver préstamo</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>

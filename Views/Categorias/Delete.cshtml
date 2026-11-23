@@ -1,0 +1,36 @@
+@model BiblioCampus.Models.Categoria
+@{
+    ViewData["Title"] = "Eliminar Categoría";
+}
+
+<div class="max-w-xl mx-auto bg-white border border-slate-200 rounded-xl p-6 space-y-5">
+    <div>
+        <p class="text-xs font-medium text-rose-700">Confirmación de Eliminación</p>
+        <h1 class="mt-1 font-display text-xl font-bold text-slate-900">¿Eliminar la categoría "@Model.Nombre"?</h1>
+        <p class="mt-1 text-sm text-slate-600">Esta acción eliminará el registro de SQL Server de manera permanente.</p>
+    </div>
+
+    @if (Model.Libros.Any())
+    {
+        <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
+            Atención: esta categoría tiene <strong>@Model.Libros.Count libro(s)</strong> relacionado(s). Por integridad referencial (<code class="font-mono">DeleteBehavior.Restrict</code>), primero debe reasignar o eliminar esos libros.
+        </div>
+    }
+
+    <dl class="grid grid-cols-2 gap-4 text-sm border-t border-b border-slate-200 py-4">
+        <div>
+            <dt class="text-xs text-slate-500">Código</dt>
+            <dd class="font-mono font-medium text-slate-900">@Model.Codigo</dd>
+        </div>
+        <div>
+            <dt class="text-xs text-slate-500">Ubicación</dt>
+            <dd class="text-slate-800">@Model.UbicacionEstante</dd>
+        </div>
+    </dl>
+
+    <form asp-action="Delete" method="post" class="flex items-center justify-end gap-3">
+        <input type="hidden" asp-for="Id" />
+        <a asp-action="Index" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg">Cancelar</a>
+        <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-rose-700 hover:bg-rose-800 rounded-lg">Eliminar Categoría</button>
+    </form>
+</div>

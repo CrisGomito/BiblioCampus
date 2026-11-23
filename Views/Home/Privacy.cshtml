@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Documentación y Privacidad";
+}
+
+<div class="max-w-3xl bg-white border border-slate-200 rounded-xl p-8 space-y-6">
+    <div>
+        <h1 class="font-display text-2xl font-bold text-slate-900">Documentación Técnica y Uso de Datos</h1>
+        <p class="mt-2 text-sm text-slate-600">
+            BiblioCampus es una aplicación web académica desarrollada en ASP.NET Core MVC (.NET 10.0) con Entity Framework Core 10.0.15 y SQL Server, utilizando Scaffolding para las operaciones CRUD de 5 entidades relacionadas de 5 atributos cada una.
+        </p>
+    </div>
+
+    <div class="border-t border-slate-200 pt-5">
+        <h2 class="font-display text-base font-semibold text-slate-900">Esquema de 5 Entidades × 5 Atributos</h2>
+        <ul class="mt-3 space-y-2 text-sm text-slate-700 list-disc list-inside">
+            <li><strong>Categorias</strong>: Id, Codigo, Nombre, Descripcion, UbicacionEstante</li>
+            <li><strong>Autores</strong>: Id, Nombres, Apellidos, Nacionalidad, CorreoContacto</li>
+            <li><strong>Libros</strong>: Id, Titulo, Isbn, AutorId (FK), CategoriaId (FK)</li>
+            <li><strong>Estudiantes</strong>: Id, Cedula, NombreCompleto, CorreoElectronico, Carrera</li>
+            <li><strong>Prestamos</strong>: Id, FechaPrestamo, Estado, EstudianteId (FK), LibroId (FK)</li>
+        </ul>
+    </div>
+
+    <div class="border-t border-slate-200 pt-5">
+        <a asp-controller="Home" asp-action="Index" class="text-sm font-medium text-blue-700 hover:underline">
+            Volver al panel principal
+        </a>
+    </div>
+</div>

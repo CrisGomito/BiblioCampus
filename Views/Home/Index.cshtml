@@ -1,0 +1,109 @@
+@model IEnumerable<BiblioCampus.Models.Prestamo>
+@{
+    ViewData["Title"] = "Panel Principal";
+}
+
+<section class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div>
+        <p class="text-xs font-medium text-slate-500">Sistema de Gestión de Biblioteca Universitaria</p>
+        <h1 class="mt-1 font-display text-3xl font-bold tracking-tight text-slate-900">Panel de Control BiblioCampus</h1>
+        <p class="mt-2 text-sm text-slate-600 max-w-2xl">
+            Administración integral de categorías, autores, catálogo de libros, estudiantes y préstamos con persistencia relacional en SQL Server mediante Entity Framework Core 10.
+        </p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+        <a asp-controller="Libros" asp-action="Create" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors whitespace-nowrap">
+            Registrar Libro
+        </a>
+        <a asp-controller="Prestamos" asp-action="Create" class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors whitespace-nowrap">
+            Nuevo Préstamo
+        </a>
+    </div>
+</section>
+
+<section class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <a asp-controller="Categorias" asp-action="Index" class="bg-white border border-slate-200 rounded-xl p-5 hover:border-blue-300 transition-colors">
+        <p class="text-xs font-medium text-slate-500">Categorías</p>
+        <p class="mt-2 font-mono text-2xl font-semibold text-slate-900 tabular-nums">@ViewBag.TotalCategorias</p>
+        <p class="mt-1 text-xs text-slate-500">Clasificación estantes</p>
+    </a>
+    <a asp-controller="Autores" asp-action="Index" class="bg-white border border-slate-200 rounded-xl p-5 hover:border-blue-300 transition-colors">
+        <p class="text-xs font-medium text-slate-500">Autores</p>
+        <p class="mt-2 font-mono text-2xl font-semibold text-slate-900 tabular-nums">@ViewBag.TotalAutores</p>
+        <p class="mt-1 text-xs text-slate-500">Directorio bibliográfico</p>
+    </a>
+    <a asp-controller="Libros" asp-action="Index" class="bg-white border border-slate-200 rounded-xl p-5 hover:border-blue-300 transition-colors">
+        <p class="text-xs font-medium text-slate-500">Libros</p>
+        <p class="mt-2 font-mono text-2xl font-semibold text-slate-900 tabular-nums">@ViewBag.TotalLibros</p>
+        <p class="mt-1 text-xs text-slate-500">Catálogo indexado</p>
+    </a>
+    <a asp-controller="Estudiantes" asp-action="Index" class="bg-white border border-slate-200 rounded-xl p-5 hover:border-blue-300 transition-colors">
+        <p class="text-xs font-medium text-slate-500">Estudiantes</p>
+        <p class="mt-2 font-mono text-2xl font-semibold text-slate-900 tabular-nums">@ViewBag.TotalEstudiantes</p>
+        <p class="mt-1 text-xs text-slate-500">Lectores registrados</p>
+    </a>
+    <a asp-controller="Prestamos" asp-action="Index" class="col-span-2 md:col-span-1 bg-white border border-slate-200 rounded-xl p-5 hover:border-blue-300 transition-colors">
+        <p class="text-xs font-medium text-slate-500">Préstamos Activos</p>
+        <p class="mt-2 font-mono text-2xl font-semibold text-blue-700 tabular-nums">@ViewBag.PrestamosActivos</p>
+        <p class="mt-1 text-xs text-slate-500">De @ViewBag.TotalPrestamos totales</p>
+    </a>
+</section>
+
+<section class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between gap-4">
+        <div>
+            <h2 class="font-display text-base font-semibold text-slate-900">Préstamos Recientes</h2>
+            <p class="text-xs text-slate-500">Últimos movimientos registrados en la tabla relacional Prestamos</p>
+        </div>
+        <a asp-controller="Prestamos" asp-action="Index" class="text-sm font-medium text-blue-700 hover:underline whitespace-nowrap">
+            Ver todos
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="p-10 text-center">
+            <p class="text-sm font-medium text-slate-900">Aún no existen préstamos registrados</p>
+            <p class="mt-1 text-xs text-slate-500">Ejecute el script de datos semilla o registre un libro y un estudiante para crear el primer préstamo.</p>
+            <a asp-controller="Prestamos" asp-action="Create" class="mt-4 inline-flex px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                Registrar primer préstamo
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600">
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3">Estudiante</th>
+                        <th class="px-6 py-3">Libro</th>
+                        <th class="px-6 py-3">Estado</th>
+                        <th class="px-6 py-3 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach (var item in Model)
+                    {
+                        var colorEstado = item.Estado == "Activo"
+                            ? "text-blue-700"
+                            : item.Estado == "Devuelto"
+                                ? "text-emerald-700"
+                                : "text-rose-700";
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="px-6 py-3.5 font-mono text-xs text-slate-600 tabular-nums whitespace-nowrap">@item.FechaPrestamo.ToString("yyyy-MM-dd")</td>
+                            <td class="px-6 py-3.5 font-medium text-slate-900">@item.Estudiante?.NombreCompleto</td>
+                            <td class="px-6 py-3.5 text-slate-700">@item.Libro?.Titulo</td>
+                            <td class="px-6 py-3.5 font-medium @colorEstado">@item.Estado</td>
+                            <td class="px-6 py-3.5 text-right whitespace-nowrap">
+                                <a asp-controller="Prestamos" asp-action="Details" asp-route-id="@item.Id" class="text-xs font-medium text-slate-600 hover:text-slate-900 mr-3">Detalles</a>
+                                <a asp-controller="Prestamos" asp-action="Edit" asp-route-id="@item.Id" class="text-xs font-medium text-blue-700 hover:text-blue-900">Editar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

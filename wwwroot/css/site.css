@@ -1,0 +1,38 @@
+/* Estilos complementarios a Tailwind CSS CDN para BiblioCampus MVC */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Validación unobtrusive de ASP.NET Core MVC */
+.input-validation-error {
+    border-color: #dc2626 !important;
+    background-color: #fef2f2;
+}
+
+.field-validation-error {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #dc2626;
+}
+
+.validation-summary-errors {
+    margin-bottom: 1.25rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #fecaca;
+    background-color: #fef2f2;
+    color: #991b1b;
+    font-size: 0.875rem;
+}
+
+.validation-summary-errors ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+}

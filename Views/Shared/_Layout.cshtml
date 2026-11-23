@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — BiblioCampus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        sans: ['"Public Sans"', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+    @{
+        var controllerActual = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+    }
+    <header class="sticky top-0 z-30 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+            <a asp-controller="Home" asp-action="Index" class="font-display text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0">
+                BiblioCampus
+            </a>
+
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a asp-controller="Categorias" asp-action="Index"
+                   class="whitespace-nowrap shrink-0 transition-colors @(controllerActual == "Categorias" ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-900")">
+                    Categorías
+                </a>
+                <a asp-controller="Autores" asp-action="Index"
+                   class="whitespace-nowrap shrink-0 transition-colors @(controllerActual == "Autores" ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-900")">
+                    Autores
+                </a>
+                <a asp-controller="Libros" asp-action="Index"
+                   class="whitespace-nowrap shrink-0 transition-colors @(controllerActual == "Libros" ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-900")">
+                    Libros
+                </a>
+                <a asp-controller="Estudiantes" asp-action="Index"
+                   class="whitespace-nowrap shrink-0 transition-colors @(controllerActual == "Estudiantes" ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-900")">
+                    Estudiantes
+                </a>
+                <a asp-controller="Prestamos" asp-action="Index"
+                   class="whitespace-nowrap shrink-0 transition-colors @(controllerActual == "Prestamos" ? "text-blue-700 font-semibold" : "text-slate-600 hover:text-slate-900")">
+                    Préstamos
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3 shrink-0">
+                <a asp-controller="Prestamos" asp-action="Create"
+                   class="px-4 py-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg transition-colors whitespace-nowrap shrink-0">
+                    Nuevo Préstamo
+                </a>
+                <button type="button" id="btnMenuMovil" aria-label="Abrir menú de navegación"
+                        class="md:hidden p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <nav id="menuMovil" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1">
+            <a asp-controller="Home" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Inicio</a>
+            <a asp-controller="Categorias" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Categorías</a>
+            <a asp-controller="Autores" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Autores</a>
+            <a asp-controller="Libros" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Libros</a>
+            <a asp-controller="Estudiantes" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Estudiantes</a>
+            <a asp-controller="Prestamos" asp-action="Index" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100">Préstamos</a>
+        </nav>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @if (TempData["Exito"] != null)
+        {
+            <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 flex items-center justify-between gap-4" role="status">
+                <span>@TempData["Exito"]</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-emerald-700 hover:text-emerald-900 text-xs font-semibold">Cerrar</button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="mb-6 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800 flex items-center justify-between gap-4" role="alert">
+                <span>@TempData["Error"]</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-rose-700 hover:text-rose-900 text-xs font-semibold">Cerrar</button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+            <p>BiblioCampus — Aplicaciones Web (Semana 4, Tarea 1) · ASP.NET Core MVC (.NET 10) &amp; SQL Server</p>
+            <a asp-controller="Home" asp-action="Privacy" class="hover:text-slate-900 transition-colors">Documentación y Privacidad</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

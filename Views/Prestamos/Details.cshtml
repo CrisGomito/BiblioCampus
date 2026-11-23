@@ -1,0 +1,44 @@
+@model BiblioCampus.Models.Prestamo
+@{
+    ViewData["Title"] = "Detalle de Préstamo";
+}
+
+<div class="max-w-3xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <p class="text-xs text-slate-500">Préstamos / Detalle</p>
+            <h1 class="font-display text-2xl font-bold text-slate-900">Préstamo #@Model.Id</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="px-4 py-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Editar</a>
+            <a asp-action="Index" class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg">Volver</a>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-6">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
+            <div>
+                <dt class="text-xs font-medium text-slate-500">ID</dt>
+                <dd class="mt-1 font-mono text-slate-900 tabular-nums">@Model.Id</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@Html.DisplayNameFor(m => m.FechaPrestamo)</dt>
+                <dd class="mt-1 font-mono text-slate-900 tabular-nums">@Model.FechaPrestamo.ToString("yyyy-MM-dd")</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@Html.DisplayNameFor(m => m.Estado)</dt>
+                <dd class="mt-1 font-semibold text-slate-900">@Model.Estado</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">Estudiante (FK)</dt>
+                <dd class="mt-1 font-medium text-slate-900">@Model.Estudiante?.NombreCompleto</dd>
+                <dd class="text-xs font-mono text-slate-500">Cédula: @Model.Estudiante?.Cedula</dd>
+            </div>
+            <div class="sm:col-span-2 border-t border-slate-100 pt-4">
+                <dt class="text-xs font-medium text-slate-500">Libro Prestado (FK)</dt>
+                <dd class="mt-1 font-medium text-slate-900">@Model.Libro?.Titulo</dd>
+                <dd class="text-xs text-slate-500">Autor: @Model.Libro?.Autor?.NombreCompleto · Categoría: @Model.Libro?.Categoria?.Nombre · ISBN: @Model.Libro?.Isbn</dd>
+            </div>
+        </dl>
+    </div>
+</div>
